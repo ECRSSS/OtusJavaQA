@@ -1,3 +1,5 @@
+import driversmanager.DriversEnum;
+import driversmanager.WebDriverFactory;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Before;
@@ -11,12 +13,12 @@ public class Tests {
 
     @Before
     public void setupWebDriver(){
-        WebDriverManager.chromedriver().setup();
+        //WebDriverManager.chromedriver().setup();
     }
 
     @Test
     public void test(){
-            driver = new ChromeDriver();
+            driver = WebDriverFactory.create(DriversEnum.CHROME);
             driver.get("https://otus.ru/");
     }
 
