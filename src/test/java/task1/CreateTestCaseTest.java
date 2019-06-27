@@ -1,5 +1,7 @@
-package task1.suites;
+package task1;
 
+import driversmanager.DriversEnum;
+import driversmanager.WebDriverFactory;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Before;
@@ -8,7 +10,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class SuiteOne {
+public class CreateTestCaseTest {
     private WebDriver driver;
 
     class LoginPage {
@@ -49,22 +51,19 @@ public class SuiteOne {
         }
     }
 
-    private void createNewTestCase(boolean xpath){
+    private void createNewTestCase(boolean xpath) {
 
     }
 
     @Before
     public void setupWebDriver() {
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+        driver = WebDriverFactory.create(DriversEnum.getDriverValueByAlias(System.getProperty("browser")), null);
     }
 
     @Test
     public void test() {
         login("ecrs", "root", true);
         toTestSpecifications(true);
-
-
     }
 
     @After
