@@ -27,7 +27,9 @@ public class CreateTestCaseTest {
     }
 
     private void toTestSpecifications(boolean xpath) {
+        driver.navigate().to("http://localhost/index.php");
         String currentHandle = driver.getWindowHandle();
+        driver.switchTo().defaultContent();
         driver.switchTo().frame("mainframe");
         MainPage page = new MainPage();
         if (xpath) {
@@ -50,12 +52,18 @@ public class CreateTestCaseTest {
         driver.findElement(page.actionsXpath).click();
         driver.findElement(page.newTestSuiteXpath).click();
         driver.findElement(page.caseNameCss).sendKeys(RandomStringUtils.randomAlphabetic(10));
+        WebElement frame = driver.findElement(By.cssSelector("div#cke_1_contents iframe"));
+        driver.switchTo().frame(frame);
+        driver.findElement(By.cssSelector("body")).sendKeys(RandomStringUtils.randomAlphabetic(10));
+        driver.switchTo().defaultContent();
+        driver.switchTo().frame("mainframe");
+        driver.switchTo().frame("workframe");
         driver.findElement(page.saveCaseXpath).click();
     }
 
     private void createNewTestCase(boolean xpath) {
-        driver.switchTo().defaultContent();
         TestSpecificationsPage page = new TestSpecificationsPage();
+        driver.switchTo().defaultContent();
         driver.switchTo().frame("mainframe");
         driver.switchTo().frame("treeframe");
         driver.findElement(page.suiteXpath).click();
@@ -66,6 +74,12 @@ public class CreateTestCaseTest {
         driver.findElement(page.actionsXpath).click();
         driver.findElement(By.cssSelector("[name='create_tc']")).click();
         driver.findElement(By.cssSelector("[name='testcase_name']")).sendKeys(RandomStringUtils.randomAlphabetic(10));
+        WebElement frame = driver.findElement(By.cssSelector("div#cke_1_contents iframe"));
+        driver.switchTo().frame(frame);
+        driver.findElement(By.cssSelector("body")).sendKeys(RandomStringUtils.randomAlphabetic(10));
+        driver.switchTo().defaultContent();
+        driver.switchTo().frame("mainframe");
+        driver.switchTo().frame("workframe");
         driver.findElement(By.cssSelector("#do_create_button")).click();
     }
 
