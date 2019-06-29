@@ -2,6 +2,7 @@ package task1;
 
 import driversmanager.DriversEnum;
 import driversmanager.WebDriverFactory;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,7 +43,18 @@ public class CreateTestCaseTest {
         executor.executeScript("arguments[0].click();", element);
     }
 
+    private void createNewTestSuite() {
+        TestSpecificationsPage page = new TestSpecificationsPage();
+        driver.switchTo().frame("mainframe");
+        driver.switchTo().frame("workframe");
+        driver.findElement(page.actionsXpath).click();
+        driver.findElement(page.newTestSuiteXpath).click();
+        driver.findElement(page.caseNameCss).sendKeys(RandomStringUtils.randomAlphabetic(10));
+        driver.findElement(page.saveCaseXpath).click();
+    }
+
     private void createNewTestCase(boolean xpath) {
+        driver.switchTo().defaultContent();
         TestSpecificationsPage page = new TestSpecificationsPage();
         driver.switchTo().frame("mainframe");
         driver.switchTo().frame("treeframe");
@@ -52,7 +64,9 @@ public class CreateTestCaseTest {
         driver.switchTo().frame("mainframe");
         driver.switchTo().frame("workframe");
         driver.findElement(page.actionsXpath).click();
-        System.out.println("hello");
+        driver.findElement(By.cssSelector("[name='create_tc']")).click();
+        driver.findElement(By.cssSelector("[name='testcase_name']")).sendKeys(RandomStringUtils.randomAlphabetic(10));
+        driver.findElement(By.cssSelector("#do_create_button")).click();
     }
 
     @Before
@@ -66,6 +80,11 @@ public class CreateTestCaseTest {
     @Test
     public void test() {
         login("user", "bitnami", true);
+        toTestSpecifications(true);
+        createNewTestSuite();
+        driver.navigate().to("http://localhost/index.php");
+        toTestSpecifications(true);
+        createNewTestCase(true);
         toTestSpecifications(true);
         createNewTestCase(true);
     }
@@ -92,10 +111,20 @@ public class CreateTestCaseTest {
 
     class TestSpecificationsPage {
         By suiteCss = By.cssSelector("li.x-tree-node li img:nth-child(2)");
-        By suiteXpath = By.xpath("//li[contains(@class,'x-tree-node')]//li//img[2]");
+        By suiteXpath = By.xpath("(//li[contains(@class,'x-tree-node')]//li//a)[last()]");
 
         By actionsCss = By.cssSelector("img.clickable[title='Actions']");
         By actionsXpath = By.xpath("//img[contains(@class,'clickable')][@title='Actions']");
+
+        By newTestSuiteCss = By.cssSelector("input#new_testsuite");
+        By newTestSuiteXpath = By.xpath("//input[@id='new_testsuite']");
+
+        By caseNameCss = By.cssSelector("#name");
+        By caseXpath = By.xpath("//*[@id='name']");
+
+        By saveCaseCss = By.cssSelector("[name='add_testsuite_button']");
+        By saveCaseXpath = By.xpath("//*[@name='add_testsuite_button']");
+
     }
 
     @After
