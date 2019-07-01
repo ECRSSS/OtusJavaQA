@@ -1,4 +1,4 @@
-package task1;
+package lesson2;
 
 import driversmanager.DriversEnum;
 import driversmanager.WebDriverFactory;
