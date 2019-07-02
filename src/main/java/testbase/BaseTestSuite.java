@@ -8,11 +8,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public abstract class BaseTestSuite {
 
@@ -21,8 +20,9 @@ public abstract class BaseTestSuite {
 
     @Before
     public void before() {
-        driver = WebDriverFactory.create(DriversEnum.CHROME, new ChromeOptions());
-        log4j.info("Запускаем браузер:",driver);
+        driver = WebDriverFactory.create(DriversEnum.CHROME, null);
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+        log4j.info("Запускаем браузер:", driver);
     }
 
     @After
@@ -31,11 +31,12 @@ public abstract class BaseTestSuite {
         log4j.info("Закрываем драйвер");
     }
 
-    protected WebElement $(String cssSelector){
+
+    protected WebElement $(String cssSelector) {
         return driver.findElement(By.cssSelector(cssSelector));
     }
 
-    protected List<WebElement> $$(String cssSelector){
+    protected List<WebElement> $$(String cssSelector) {
         return driver.findElements(By.cssSelector(cssSelector));
     }
 }
